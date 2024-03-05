@@ -39,7 +39,7 @@ export class TaskService {
   ): Promise<TaskReturn> => {
     const updateTask = await prisma.task.update({
       where: { id: taskId },
-      data,
+      data, include: {category: true}
     });
 
     return taskReturnSchema.parse(updateTask);

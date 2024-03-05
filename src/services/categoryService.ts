@@ -10,6 +10,6 @@ export class CategoryService {
   };
 
   public delete = async (CategoryId: string): Promise<void> => {
-    await prisma.task.delete({ where: { id: Number(CategoryId) } });
+    await prisma.category.delete({ where: { id: Number(CategoryId) } });
   };
 }

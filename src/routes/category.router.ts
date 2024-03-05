@@ -9,10 +9,9 @@ const controller = new CategoryController();
 categoryRouter.post(
   "",
   ensure.ValidBody(categoryCreateSchema),
-  ensure.bodyTaskIdExists,
   controller.create
 );
 
-categoryRouter.delete("/:id", ensure.bodyCategoryExists, controller.delete)
+categoryRouter.delete("/:id", ensure.paramsCategoryIdExists, controller.delete)
 
 

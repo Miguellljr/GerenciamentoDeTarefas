@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { TaskController } from "../controller";
 import { ensure } from "../middlewares";
-import { taskCreateSchema } from "../schemas/task.schema";
+import { taskCreateSchema, taskUpdateSchema } from "../schemas/task.schema";
 
 export const taskRouter = Router();
 const controller = new TaskController();
@@ -19,6 +19,7 @@ taskRouter.get("/:id", ensure.paramsTaskIdExists, controller.retrieve);
 
 taskRouter.patch(
   "/:id",
+  ensure.ValidBody(taskUpdateSchema),
   ensure.paramsTaskIdExists,
   ensure.bodyCategoryExists,
   controller.update

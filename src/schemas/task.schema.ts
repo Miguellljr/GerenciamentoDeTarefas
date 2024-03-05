@@ -3,7 +3,7 @@ import { baseSchema } from "./base.schema";
 import { categoryCreateSchema, categorySchema } from "./category.schema";
 
 const taskSchema = baseSchema.extend({
-  title: z.string(),
+  title: z.string().min(1),
   content: z.string(),
   categoryId: z.number().positive().nullish(),
   finished: z.boolean().default(false),

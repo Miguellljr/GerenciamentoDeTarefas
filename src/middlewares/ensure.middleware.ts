@@ -65,6 +65,25 @@ class EnsureMiddleware {
     res.locals = { ...res.locals, foundTask };
     return next();
   };
+
+  public paramsCategoryIdExists = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    const { id } = req.params;
+
+    const foundCategory = await prisma.category.findFirst({
+      where: { id: Number(id) },
+    });
+
+    if (!foundCategory) {
+      throw new AppError("Category not found", 404);
+    }
+
+    res.locals = { ...res.locals, foundCategory };
+    return next();
+  };
 }
 
 export const ensure = new EnsureMiddleware();
