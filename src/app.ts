@@ -3,6 +3,8 @@ import express, { json } from "express";
 import helmet from "helmet";
 import { categoryRouter, taskRouter } from "./routes";
 import { handleErrors } from "./middlewares";
+import { userRouter } from "./routes/user.router";
+
 
 export const app = express();
 
@@ -11,6 +13,9 @@ app.use(helmet());
 
 app.use("/tasks", taskRouter);
 app.use("/categories", categoryRouter);
+app.use("/user", userRouter);
+
 
 
 app.use(handleErrors)
+

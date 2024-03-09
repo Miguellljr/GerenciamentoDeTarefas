@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { baseSchema } from "./base.schema";
-import { categoryCreateSchema, categorySchema } from "./category.schema";
+import { categorySchema } from "./category.schema";
+import { userSchema } from "./user.schema";
 
 const taskSchema = baseSchema.extend({
   title: z.string().min(1),
@@ -8,6 +9,7 @@ const taskSchema = baseSchema.extend({
   categoryId: z.number().positive().nullish(),
   finished: z.boolean().default(false),
   category: categorySchema.nullish(),
+  user: userSchema.nullish()
 });
 
 const taskCreateSchema = taskSchema.omit({ id: true, category: true  });

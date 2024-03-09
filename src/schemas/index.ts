@@ -6,6 +6,7 @@ import {
   taskReturnSchema,
   taskUpdateSchema,
 } from "./task.schema";
+import { userSchema, userCreateSchema, userReturnSchema } from "./user.schema";
 
 export {
   baseSchema,
@@ -15,4 +16,7 @@ export {
   taskCreateSchema,
   taskReturnSchema,
   taskUpdateSchema,
+  userSchema,
+  userCreateSchema,
+  userReturnSchema,
 };
