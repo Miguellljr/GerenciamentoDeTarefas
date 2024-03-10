@@ -1,23 +1,34 @@
 import { z } from "zod";
 import { baseSchema } from "./base.schema";
 import { categorySchema } from "./category.schema";
-import { userSchema } from "./user.schema";
+import { userReturnSchema, userSchema } from "./user.schema";
+
 
 const taskSchema = baseSchema.extend({
   title: z.string().min(1),
   content: z.string(),
-  categoryId: z.number().positive().nullish(),
   finished: z.boolean().default(false),
+
   category: categorySchema.nullish(),
-  user: userSchema.nullish()
+
+  owner: userSchema.nullish(),
 });
 
-const taskCreateSchema = taskSchema.omit({ id: true, category: true  });
+const taskCreateSchema = taskSchema
+  .omit({ id: true, category: true, owner: true })
+  .extend({ ownerId: z.number().positive().nullish() })
+  .extend({ categoryId: z.number().positive().nullish() });
 
 const taskUpdateSchema = taskCreateSchema.partial();
 
-const taskReturnSchema = taskSchema.omit({categoryId: true});
+const taskReturnSchema = taskSchema.extend({owner: userReturnSchema});
 
-const taskCategorySchema = taskSchema.omit({category: true});
+const taskCategorySchema = taskSchema.omit({ category: true, owner: true });
 
-export { taskSchema, taskCreateSchema, taskReturnSchema, taskUpdateSchema,  taskCategorySchema };
+export {
+  taskSchema,
+  taskCreateSchema,
+  taskReturnSchema,
+  taskUpdateSchema,
+  taskCategorySchema,
+};

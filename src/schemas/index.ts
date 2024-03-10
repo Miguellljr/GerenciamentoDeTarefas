@@ -7,6 +7,7 @@ import {
   taskUpdateSchema,
 } from "./task.schema";
 import { userSchema, userCreateSchema, userReturnSchema } from "./user.schema";
+import { sessionCreateSchema } from "./session.schema";
 
 export {
   baseSchema,
@@ -19,4 +20,5 @@ export {
   userSchema,
   userCreateSchema,
   userReturnSchema,
+  sessionCreateSchema,
 };
