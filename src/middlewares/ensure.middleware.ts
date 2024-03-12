@@ -66,6 +66,25 @@ class EnsureMiddleware {
     return next();
   };
 
+  public paramsUserIdExists = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    const { userId } = req.params;
+
+    const foundUser= await prisma.user.findFirst({
+      where: { id: Number(userId) },
+    });
+
+    if (!foundUser) {
+      throw new AppError("User not found", 404);
+    }
+
+    res.locals = { ...res.locals, foundUser};
+    return next();
+  };
+
   public paramsCategoryIdExists = async (
     req: Request,
     res: Response,
@@ -106,6 +125,8 @@ class EnsureMiddleware {
 
     return next();
   };
+
+  
 }
 
 export const ensure = new EnsureMiddleware();
