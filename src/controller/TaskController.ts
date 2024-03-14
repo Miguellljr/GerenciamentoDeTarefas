@@ -5,16 +5,24 @@ export class TaskController {
   private taskService: TaskService = new TaskService();
 
   public create = async (req: Request, res: Response): Promise<Response> => {
-    const newTask = await this.taskService.create(req.body);
+    const userId = +res.locals.decoded.sub
+
+    const payLoad = {
+      ...req.body,
+      userId
+    }
+    const newTask = await this.taskService.create(payLoad);
     return res.status(201).json(newTask);
   };
 
   public read = async (req: Request, res: Response): Promise<Response> => {
+    const userId = Number(res.locals.decoded.sub)
+
     if(req.query.category){
-      const allTasks = await this.taskService.read(req.query.category as string);
+      const allTasks = await this.taskService.read( userId, req.query.category as string);
      return res.status(200).json(allTasks);
     }
-    const allTasks = await this.taskService.read();
+    const allTasks = await this.taskService.read( userId );
     return res.status(200).json(allTasks);
   };
 

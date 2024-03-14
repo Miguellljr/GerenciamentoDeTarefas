@@ -10,7 +10,9 @@ export class UserController {
   };
 
   public read = async (req: Request, res: Response): Promise<Response> => {
-    const newUser = await this.userService.read();
+    const userId = Number(res.locals.decoded.sub)
+    
+    const newUser = await this.userService.read(userId);
     return res.status(200).json(newUser);
   };
 
