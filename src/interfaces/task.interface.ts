@@ -9,4 +9,12 @@ type TaskCreate = z.infer<typeof taskCreateSchema>;
 type TaskUpdate = z.infer<typeof taskUpdateSchema>;
 type TaskReturn = z.infer<typeof taskReturnSchema>;
 
-export { TaskCreate, TaskUpdate, TaskReturn };
+type TaskCreateService = {
+  title: string;
+  content: string;
+  finished: boolean;
+  categoryId?: number | null | undefined;
+  userId: number
+}
+
+export { TaskCreate, TaskUpdate, TaskReturn, TaskCreateService };
