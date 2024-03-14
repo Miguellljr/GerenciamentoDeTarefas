@@ -13,8 +13,8 @@ app.use(helmet());
 
 app.use("/tasks", taskRouter);
 app.use("/categories", categoryRouter);
-app.use("/user", userRouter);
-app.use("/user/login", sessionRouter);
+app.use("/users/login", sessionRouter);
+app.use("/users", userRouter);
 
 
 app.use(handleErrors)
