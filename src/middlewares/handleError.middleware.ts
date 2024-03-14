@@ -13,15 +13,15 @@ class HandleErrorMiddleware {
     if (error instanceof AppError) {
       return res.status(error.status).json({message: error.message});
     }
-
+    
     if (error instanceof JsonWebTokenError) {
       return res.status(401).json({ message: error.message });
     }
-
+    
     if (error instanceof ZodError) {
       return res.status(400).json({ message: error.flatten().fieldErrors });
     }
-
+    
     console.log(error)
     return res.status(500).json({ message: "Internal Server Error." });
   };

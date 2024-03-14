@@ -55,7 +55,7 @@ class EnsureMiddleware {
 
     const foundTask = await prisma.task.findFirst({
       where: { id: Number(id) },
-      include: { category: true },
+      include: { category: true , user: true },
     });
 
     if (!foundTask) {
@@ -93,7 +93,7 @@ class EnsureMiddleware {
     const { id } = req.params;
 
     const foundCategory = await prisma.category.findFirst({
-      where: { id: Number(id) },
+      where: { id: Number(id) }, include: {user: true}
     });
 
     if (!foundCategory) {
@@ -119,7 +119,7 @@ class EnsureMiddleware {
       where: { email },
     });
 
-    if (!foundUser) {
+    if (foundUser) {
       throw new AppError("This email is already registered", 409);
     }
 
