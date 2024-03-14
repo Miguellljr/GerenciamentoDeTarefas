@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { ensure } from "../middlewares";
+import { auth, ensure } from "../middlewares";
 import { sessionCreateSchema } from "../schemas";
 import { SessionController } from "../controller";
 

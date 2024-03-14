@@ -1,10 +1,13 @@
 import { Router } from "express";
 import { TaskController } from "../controller";
-import { ensure } from "../middlewares";
+import { ensure, permission } from "../middlewares";
 import { taskCreateSchema, taskUpdateSchema } from "../schemas/task.schema";
+import { auth } from "../middlewares/auth.middleware";
 
 export const taskRouter = Router();
 const controller = new TaskController();
+
+taskRouter.use(auth.isAuthenticated);
 
 taskRouter.post(
   "",
@@ -15,14 +18,25 @@ taskRouter.post(
 
 taskRouter.get("", controller.read);
 
-taskRouter.get("/:id", ensure.paramsTaskIdExists, controller.retrieve);
+taskRouter.get(
+  "/:id",
+  ensure.paramsTaskIdExists,
+  permission.ownerUserOrNot,
+  controller.retrieve
+);
 
 taskRouter.patch(
   "/:id",
-  ensure.ValidBody(taskUpdateSchema),
   ensure.paramsTaskIdExists,
+  ensure.ValidBody(taskUpdateSchema),
+  permission.ownerUserOrNot,
   ensure.bodyCategoryExists,
   controller.update
 );
 
-taskRouter.delete("/:id", ensure.paramsTaskIdExists, controller.delete);
+taskRouter.delete(
+  "/:id",
+  ensure.paramsTaskIdExists,
+  permission.ownerUserOrNot,
+  controller.delete
+);

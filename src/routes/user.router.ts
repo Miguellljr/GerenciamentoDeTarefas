@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { ensure } from "../middlewares";
+import { auth, ensure } from "../middlewares";
 import { UserController } from "../controller/UserController";
 import { userCreateSchema } from "../schemas";
 
@@ -13,4 +13,4 @@ userRouter.post(
   controller.create
 );
 
-userRouter.get("/profile", controller.read);
+userRouter.get("/profile", auth.isAuthenticated, controller.read);
