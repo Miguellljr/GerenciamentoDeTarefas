@@ -1,4 +1,4 @@
-import { compare } from "bcrypt";
+import bcrypt from "bcryptjs";
 import { prisma } from "../database/prisma";
 import { AppError } from "../errors";
 import { SessionCreate, SessionReturn } from "../interfaces";
@@ -15,7 +15,7 @@ export class SessionService {
       throw new AppError("User not exists", 404);
     }
 
-    const pwdMatch = compare(password, foundUser.password);
+    const pwdMatch = await bcrypt.compare(password, foundUser.password);
 
     if (!pwdMatch) {
       throw new AppError("Email and password doesn't match", 401);
@@ -24,11 +24,11 @@ export class SessionService {
     const secret = process.env.JWT_SECRET!;
     const expiresIn = process.env.EXPIRES_IN!;
 
-    const token = sign({}, secret, {
+    const accessToken = sign({}, secret, {
       expiresIn,
       subject: String(foundUser.id),
     });
-    
-    return { token };
+
+    return { accessToken, user: foundUser };
   };
 }

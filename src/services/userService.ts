@@ -12,11 +12,10 @@ export class UserService {
     return userReturnSchema.parse(newUser);
   };
 
-  public read = async (): Promise<Array<UserReturn>> => {
-    const allUsers = await prisma.user.findMany({
-      include: { tasks: true, categories: true },
-    });
+  public read = async (userId: number): Promise<UserReturn> => {
 
-    return userReturnSchema.array().parse(allUsers);
+    const user= await prisma.user.findFirst({where: {id: userId}});
+
+    return userReturnSchema.parse(user);
   };
 }

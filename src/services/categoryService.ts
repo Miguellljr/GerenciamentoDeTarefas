@@ -3,8 +3,13 @@ import { CategoryCreate, CategoryReturn } from "../interfaces";
 import { categorySchema } from "../schemas/category.schema";
 
 export class CategoryService {
-  public create = async ({...payload}: CategoryCreate): Promise<CategoryReturn> => {
-    const newCategory = await prisma.category.create({ data: payload });
+  public create = async (
+    payload: CategoryCreate,
+    userId: number
+  ): Promise<CategoryReturn> => {
+    const newCategory = await prisma.category.create({
+      data: { ...payload, userId },
+    });
 
     return categorySchema.parse(newCategory);
   };

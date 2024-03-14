@@ -1,19 +1,19 @@
 import { Task } from "@prisma/client";
 import { prisma } from "../database/prisma";
 import {
-  TaskCreate,
   TaskReturn,
   TaskUpdate,
+  TaskCreateService
 } from "../interfaces/task.interface";
-import { taskReturnSchema, taskCategorySchema } from "../schemas/task.schema";
+import { taskReturnSchema } from "../schemas/task.schema";
 
 export class TaskService {
-  public create = async ({ ...payLoad }: TaskCreate): Promise<TaskReturn> => {
+  public create = async ( payLoad : TaskCreateService): Promise<TaskReturn> => {
     const newTask = await prisma.task.create({ data: payLoad });
-    return taskCategorySchema.parse(newTask);
+    return taskReturnSchema.parse(newTask);
   };
 
-  public read = async (search?: string): Promise<Array<TaskReturn>> => {
+  public read = async (userId: number, search?: string): Promise<Array<TaskReturn>> => {
     
     if(search){
       const allTasks = await prisma.task.findMany({
@@ -23,7 +23,7 @@ export class TaskService {
       return taskReturnSchema.array().parse(allTasks);
     }
 
-    const allTasks = await prisma.task.findMany({include: {category: true }});
+    const allTasks = await prisma.task.findMany({include: {category: true }, where: {userId}});
 
     return taskReturnSchema.array().parse(allTasks);
    
